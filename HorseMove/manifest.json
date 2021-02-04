@@ -1,10 +1,10 @@
 {
   "Name": "HorseMove",
   "Author": "Anthony Porthouse",
-  "Version": "1.0.0",
+  "Version": "0.1.0",
   "Description": "Horse goes brrrrrrr",
   "UniqueID": "porthou.horsemove",
   "EntryDll": "HorseMove.dll",
   "MinimumApiVersion": "3.9.1",
-  "UpdateKeys": []
+  "UpdateKeys": ["GitHub:AnthonyPorthouse/HorseMove"]
 }
