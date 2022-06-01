@@ -1,4 +1,4 @@
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 
 namespace HorseMove
@@ -17,7 +17,7 @@ namespace HorseMove
         {
             config = helper.ReadConfig<ModConfig>();
             
-            var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+            var harmony = new Harmony(this.ModManifest.UniqueID);
             
             HorsePatches.Initialize(harmony, this.Monitor, config);
         }

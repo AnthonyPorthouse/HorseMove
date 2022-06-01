@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
@@ -21,7 +21,7 @@ namespace HorseMove
         private static bool _moveOffFarm;
         private static bool _moveIfRaining;
 
-        public static void Initialize(HarmonyInstance harmony, IMonitor monitor, ModConfig config)
+        public static void Initialize(Harmony harmony, IMonitor monitor, ModConfig config)
         {
             monitor.Log($"Setting up Patches for Horse", LogLevel.Debug);
 
