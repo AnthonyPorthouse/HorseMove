@@ -7,13 +7,15 @@ namespace HorseMove
         public string wanderLength { get; set; }
         public bool wanderOutsideOfFarm { get; set; }
         public bool wanderIfRaining { get; set; }
+        public bool verboseLogging { get; set; }
 
         public ModConfig()
         {
-            wanderFrequency = "infrequent";
+            wanderFrequency = "frequent";
             wanderLength = "short";
             wanderOutsideOfFarm = false;
             wanderIfRaining = false;
+            verboseLogging = false;
         }
 
         public float GetWanderFrequency()

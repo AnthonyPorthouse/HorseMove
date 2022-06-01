@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Characters;
 
@@ -11,17 +12,14 @@ namespace HorseMove
     public class HorsePatches
     {
         private static IMonitor _monitor;
-        private static double _moveChance;
-        private static int _moveMin;
-        private static int _moveMax;
+        private static ModConfig _config;
 
         private static bool _isWandering = false;
         private static int _ticksToMove = 0;
-        private static Direction _moveDirection = Direction.Up;
-        private static bool _moveOffFarm;
-        private static bool _moveIfRaining;
+        private static Direction _moveDirection = Direction.Down;
+        private static bool _hasMovedToday = false;
 
-        public static void Initialize(Harmony harmony, IMonitor monitor, ModConfig config)
+        public static void Initialize(Harmony harmony, IMonitor monitor, IModHelper helper, ModConfig config)
         {
             monitor.Log($"Setting up Patches for Horse", LogLevel.Debug);
 
@@ -32,11 +30,14 @@ namespace HorseMove
             );
 
             _monitor = monitor;
-            _moveChance = config.GetWanderFrequency();
-            _moveMin = config.GetWanderRange().Item1;
-            _moveMax = config.GetWanderRange().Item2;
-            _moveOffFarm = config.wanderOutsideOfFarm;
-            _moveIfRaining = config.wanderIfRaining;
+            _config = config;
+
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
+        }
+
+        private static void OnDayStarted(object sender, DayStartedEventArgs e)
+        {
+            _hasMovedToday = false;
         }
 
         public static bool Before_Update(Horse __instance, GameTime time)
@@ -48,12 +49,22 @@ namespace HorseMove
                     return true;
                 }
 
-                if (!__instance.currentLocation.isFarm && !_moveOffFarm)
+                if (!Game1.IsMasterGame)
                 {
                     return true;
                 }
 
-                if (Game1.isRaining && !_moveIfRaining)
+                if (!Game1.shouldTimePass())
+                {
+                    return true;
+                }
+
+                if (!__instance.currentLocation.IsFarm && !_config.wanderOutsideOfFarm)
+                {
+                    return true;
+                }
+
+                if ((Game1.isRaining || Game1.isSnowing) && !_config.wanderIfRaining)
                 {
                     return true;
                 }
@@ -76,10 +87,17 @@ namespace HorseMove
 
         private static bool Move(Horse horse, GameTime time)
         {
-            if (Game1.random.NextDouble() < _moveChance && !_isWandering)
+            if (Game1.random.NextDouble() < _config.GetWanderFrequency() && !_isWandering)
             {
                 _moveDirection = (Direction) Game1.random.Next(0, 4);
-                _ticksToMove = Game1.random.Next(_moveMin, _moveMax);
+                _ticksToMove = Game1.random.Next(_config.GetWanderRange().Item1, _config.GetWanderRange().Item2);
+
+                if (!_hasMovedToday)
+                {
+                    _moveDirection = Direction.Down;
+                    _ticksToMove = 40;
+                    _hasMovedToday = true;
+                }
 
                 horse.faceDirection((int) _moveDirection);
 
@@ -141,7 +159,7 @@ namespace HorseMove
                         new FarmerSprite.AnimationFrame(6, 70)
                     });
                 
-                _monitor.Log($"Moving {horse.getName()} {_moveDirection} for {_ticksToMove}", LogLevel.Debug);
+                VerboseLog($"Moving {horse.getName()} {_moveDirection} for {_ticksToMove}");
                 _isWandering = true;
             }
 
@@ -156,7 +174,7 @@ namespace HorseMove
                     horse
                 ))
                 {
-                    _monitor.Log("Bonk! Stopping wandering.", LogLevel.Debug);
+                    VerboseLog("Bonk! Stopping wandering.");
                     _isWandering = false;
                     horse.Sprite.StopAnimation();
                     horse.faceDirection((int) _moveDirection);
@@ -201,6 +219,14 @@ namespace HorseMove
             }
 
             return true;
+        }
+
+        private static void VerboseLog(string message)
+        {
+            if (_config.verboseLogging)
+            {
+                _monitor.Log(message, LogLevel.Debug);
+            }
         }
     }
 
