@@ -1,0 +1,27 @@
+﻿{
+  "config.horsemove.movement-settings": "Movement Settings",
+
+  "config.horsemove.wander-off-farm.name": "Wander when outside of Farm",
+  "config.horsemove.wander-off-farm.tooltip": "Toggles whether the horse will move about on its own when you're away from the farm.",
+
+  "config.horsemove.wander-if-raining.name": "Wander when weather is bad",
+  "config.horsemove.wander-if-raining.tooltip": "Toggles whether the horse will move about on its own when there is rain or snow.",
+
+  "config.horsemove.wander-frequency.name": "Wander Frequency",
+  "config.horsemove.wander-frequency.tooltip": "Sets the frequency in which the horse will move about on its own.",
+  "config.horsemove.wander-frequency.values.comeback": "Constantly",
+  "config.horsemove.wander-frequency.values.veryfrequent": "Very Frequently",
+  "config.horsemove.wander-frequency.values.frequent": "Frequently",
+  "config.horsemove.wander-frequency.values.infrequent": "Infrequently",
+
+  "config.horsemove.wander-minimum-duration.name": "Minimum Wander Duration",
+  "config.horsemove.wander-minimum-duration.tooltip": "Sets the minimum length for how long the horse will move when it does wander.",
+
+  "config.horsemove.wander-maximum-duration.name": "Maximum Wander Duration",
+  "config.horsemove.wander-maximum-duration.tooltip": "Sets the maximum length for how long the horse will move when it does wander.",
+
+  "config.horsemove.debugging-settings": "Debug Settings",
+  "config.horsemove.verbose-logging.name": "Verbose Logging",
+  "config.horsemove.verbose-logging.tooltip": "Enables more logging around horse wandering behaviours."
+
+}

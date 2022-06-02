@@ -17,6 +17,7 @@ namespace HorseMove
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
+            I18n.Init(helper.Translation);
             Config = helper.ReadConfig<ModConfig>();            
            
             var harmony = new Harmony(this.ModManifest.UniqueID);
@@ -42,47 +43,62 @@ namespace HorseMove
             // add some config options
             configMenu.AddSectionTitle(
                 mod: this.ModManifest,
-                text: () => "Movement Settings"
+                text: I18n.Config_Horsemove_MovementSettings
             );
             configMenu.AddBoolOption(
                 mod: this.ModManifest,
-                name: () => "Wander when outside of Farm",
-                tooltip: () => "Toggles whether the horse will move about on its own when you're away from the farm.",
-                getValue: () => this.Config.wanderOutsideOfFarm,
-                setValue: value => this.Config.wanderOutsideOfFarm = value
+                name: I18n.Config_Horsemove_WanderOffFarm_Name,
+                tooltip: I18n.Config_Horsemove_WanderOffFarm_Tooltip,
+                getValue: () => this.Config.WanderOutsideOfFarm,
+                setValue: value => this.Config.WanderOutsideOfFarm = value
             );
             configMenu.AddBoolOption(
                 mod: this.ModManifest,
-                name: () => "Wander when weather is bad",
-                tooltip: () => "Toggles whether the horse will move about on its own when there is rain or snow.",
-                getValue: () => this.Config.wanderIfRaining,
-                setValue: value => this.Config.wanderIfRaining = value
+                name: I18n.Config_Horsemove_WanderIfRaining_Name,
+                tooltip: I18n.Config_Horsemove_WanderIfRaining_Tooltip,
+                getValue: () => this.Config.WanderIfRaining,
+                setValue: value => this.Config.WanderIfRaining = value
             );
             configMenu.AddTextOption(
                 mod: this.ModManifest,
-                name: () => "Wander Frequency",
-                tooltip: () => "Sets the frequency in which the horse will move about on its own",
-                getValue: () => this.Config.wanderFrequency,
-                setValue: value => this.Config.wanderFrequency = value,
-                allowedValues: new string[] { "comeback", "veryfrequent", "frequent", "infrequent" }
+                name: I18n.Config_Horsemove_WanderFrequency_Name,
+                tooltip:I18n.Config_Horsemove_WanderFrequency_Tooltip,
+                getValue: () => this.Config.WanderFrequency,
+                setValue: value => this.Config.WanderFrequency = value,
+                allowedValues: new string[] { "comeback", "veryfrequent", "frequent", "infrequent" },
+                formatAllowedValue: value => I18n.GetByKey($"config.horsemove.wander-frequency.values.{value}")
+
             );
-            configMenu.AddTextOption(
+            configMenu.AddNumberOption(
                 mod: this.ModManifest,
-                name: () => "Wander Duration",
-                tooltip: () => "Sets the length for how long the horse will move when it does wander",
-                getValue: () => this.Config.wanderLength,
-                setValue: value => this.Config.wanderLength = value,
-                allowedValues: new string[] { "long", "medium", "short" }
-            );
+                name: I18n.Config_Horsemove_WanderMinimumDuration_Name,
+                tooltip: I18n.Config_Horsemove_WanderMinimumDuration_Tooltip,
+                getValue: () => this.Config.WanderDuration.Min,
+                setValue: value => this.Config.WanderDuration.Min = value,
+                min: 0f,
+                max: 10f,
+                interval: 0.5f
+            ); 
+            configMenu.AddNumberOption(
+                mod: this.ModManifest,
+                name: I18n.Config_Horsemove_WanderMaximumDuration_Name,
+                tooltip: I18n.Config_Horsemove_WanderMinimumDuration_Tooltip,
+                getValue: () => this.Config.WanderDuration.Max,
+                setValue: value => this.Config.WanderDuration.Max = value,
+                min: 0f,
+                max: 10f,
+                interval: 0.5f
+            ); 
             configMenu.AddSectionTitle(
                 mod: this.ModManifest,
                 text: () => "Debugging"
             );
             configMenu.AddBoolOption(
                mod: this.ModManifest,
-               name: () => "Verbose Logging",
-               getValue: () => this.Config.verboseLogging,
-               setValue: value => this.Config.verboseLogging = value
+               name: I18n.Config_Horsemove_VerboseLogging_Name,
+               tooltip: I18n.Config_Horsemove_VerboseLogging_Tooltip,
+               getValue: () => this.Config.VerboseLogging,
+               setValue: value => this.Config.VerboseLogging = value
            );
         }
     }

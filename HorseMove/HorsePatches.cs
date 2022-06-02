@@ -44,27 +44,18 @@ namespace HorseMove
         {
             try
             {
-                if (__instance == null)
+                if (__instance == null || !Game1.IsMasterGame || !Game1.shouldTimePass())
                 {
                     return true;
                 }
 
-                if (!Game1.IsMasterGame)
+
+                if (!_config.WanderOutsideOfFarm && !__instance.currentLocation.IsFarm)
                 {
                     return true;
                 }
 
-                if (!Game1.shouldTimePass())
-                {
-                    return true;
-                }
-
-                if (!__instance.currentLocation.IsFarm && !_config.wanderOutsideOfFarm)
-                {
-                    return true;
-                }
-
-                if ((Game1.isRaining || Game1.isSnowing) && !_config.wanderIfRaining)
+                if (!_config.WanderIfRaining && (Game1.isRaining || Game1.isSnowing))
                 {
                     return true;
                 }
@@ -87,7 +78,7 @@ namespace HorseMove
 
         private static bool Move(Horse horse, GameTime time)
         {
-            if (Game1.random.NextDouble() < _config.GetWanderFrequency() && !_isWandering)
+            if (!_isWandering && Game1.random.NextDouble() < _config.GetWanderFrequency())
             {
                 _moveDirection = (Direction) Game1.random.Next(0, 4);
                 _ticksToMove = Game1.random.Next(_config.GetWanderRange().Item1, _config.GetWanderRange().Item2);
@@ -95,7 +86,7 @@ namespace HorseMove
                 if (!_hasMovedToday)
                 {
                     _moveDirection = Direction.Down;
-                    _ticksToMove = 40;
+                    _ticksToMove = 60;
                     _hasMovedToday = true;
                 }
 
@@ -163,7 +154,7 @@ namespace HorseMove
                 _isWandering = true;
             }
 
-            if (_ticksToMove >= 0 && _isWandering)
+            if (_isWandering && _ticksToMove >= 0)
             {
                 if (horse.currentLocation.isCollidingPosition(
                     horse.nextPosition(horse.getDirection()),
@@ -223,7 +214,7 @@ namespace HorseMove
 
         private static void VerboseLog(string message)
         {
-            if (_config.verboseLogging)
+            if (_config.VerboseLogging)
             {
                 _monitor.Log(message, LogLevel.Debug);
             }

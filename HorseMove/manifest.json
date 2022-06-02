@@ -1,7 +1,7 @@
 {
   "Name": "Horse Move",
   "Author": "Anthony Porthouse",
-  "Version": "1.1.0",
+  "Version": "1.2.0",
   "Description": "Let your horse roam free",
   "UniqueID": "porthou.horsemove",
   "EntryDll": "HorseMove.dll",
