@@ -19,6 +19,8 @@ namespace HorseMove
         private static Direction _moveDirection = Direction.Down;
         private static bool _hasMovedToday = false;
 
+        private static bool _tractorModLoaded = false;
+
         public static void Initialize(Harmony harmony, IMonitor monitor, IModHelper helper, ModConfig config)
         {
             monitor.Log($"Setting up Patches for Horse", LogLevel.Debug);
@@ -31,6 +33,8 @@ namespace HorseMove
 
             _monitor = monitor;
             _config = config;
+
+            _tractorModLoaded = helper.ModRegistry.IsLoaded("Pathoschild.TractorMod");
 
             helper.Events.GameLoop.DayStarted += OnDayStarted;
         }
@@ -49,6 +53,10 @@ namespace HorseMove
                     return true;
                 }
 
+                if (_tractorModLoaded && __instance.modData["Pathoschild.TractorMod"] == "1")
+                {
+                    return true;
+                }
 
                 if (!_config.WanderOutsideOfFarm && !__instance.currentLocation.IsFarm)
                 {
