@@ -53,7 +53,7 @@ namespace HorseMove
                     return true;
                 }
 
-                if (_tractorModLoaded && __instance.modData["Pathoschild.TractorMod"] == "1")
+                if (_tractorModLoaded && __instance.modData.ContainsKey("Pathoschild.TractorMod"))
                 {
                     return true;
                 }
@@ -157,7 +157,7 @@ namespace HorseMove
                         new FarmerSprite.AnimationFrame(5, 70),
                         new FarmerSprite.AnimationFrame(6, 70)
                     });
-                
+
                 VerboseLog($"Moving {horse.getName()} {_moveDirection} for {_ticksToMove}");
                 _isWandering = true;
             }
@@ -165,13 +165,13 @@ namespace HorseMove
             if (_isWandering && _ticksToMove >= 0)
             {
                 if (horse.currentLocation.isCollidingPosition(
-                    horse.nextPosition(horse.getDirection()),
-                    Game1.viewport,
-                    false,
-                    0,
-                    false,
-                    horse
-                ))
+                        horse.nextPosition(horse.getDirection()),
+                        Game1.viewport,
+                        false,
+                        0,
+                        false,
+                        horse
+                    ))
                 {
                     VerboseLog("Bonk! Stopping wandering.");
                     _isWandering = false;
