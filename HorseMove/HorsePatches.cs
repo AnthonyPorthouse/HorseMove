@@ -198,6 +198,21 @@ namespace HorseMove
                         break;
                 }
 
+                // Are we walking off the map?
+                var nextPos = horse.nextPositionPoint();
+                var mapSize = horse.currentLocation.map.DisplaySize;
+                
+                if (nextPos.X <= 0 || nextPos.X >= mapSize.Width || nextPos.Y <= 0 || nextPos.Y >= mapSize.Height)
+                {
+                    VerboseLog("Edge Bonk! Stopped wandering.");
+                    _isWandering = false;
+                    horse.Sprite.StopAnimation();
+                    horse.faceDirection((int) _moveDirection);
+                    horse.Halt();
+                    _ticksToMove = 0;
+                    return true;
+                }
+
                 horse.speed = 1;
                 horse.Sprite.loop = true;
                 horse.Sprite.animateOnce(time);
