@@ -102,17 +102,17 @@ namespace HorseMove
 
                 AnimatedSprite.endOfAnimationBehavior frameBehavior = x =>
                 {
-                    switch (horse.currentLocation.doesTileHaveProperty((int) horse.getTileLocation().X,
-                        (int) horse.getTileLocation().Y, "Type", "Back"))
+                    switch (horse.currentLocation.doesTileHaveProperty((int) horse.Tile.X,
+                        (int) horse.Tile.Y, "Type", "Back"))
                     {
                         case "Stone":
-                            horse.currentLocation.localSoundAt("stoneStep", horse.getTileLocation());
+                            horse.currentLocation.localSound("stoneStep", horse.Tile);
                             break;
                         case "Wood":
-                            horse.currentLocation.localSoundAt("woodyStep", horse.getTileLocation());
+                            horse.currentLocation.localSound("woodyStep", horse.Tile);
                             break;
                         default:
-                            horse.currentLocation.localSoundAt("thudStep", horse.getTileLocation());
+                            horse.currentLocation.localSound("thudStep", horse.Tile);
                             break;
                     }
                 };

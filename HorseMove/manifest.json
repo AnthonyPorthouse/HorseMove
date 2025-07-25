@@ -1,10 +1,10 @@
 {
   "Name": "Horse Move",
   "Author": "Anthony Porthouse",
-  "Version": "1.2.0",
+  "Version": "1.3.0",
   "Description": "Let your horse roam free",
   "UniqueID": "porthou.horsemove",
   "EntryDll": "HorseMove.dll",
-  "MinimumApiVersion": "3.14.0",
+  "MinimumApiVersion": "4.3.2",
   "UpdateKeys": ["GitHub:AnthonyPorthouse/HorseMove"]
 }
